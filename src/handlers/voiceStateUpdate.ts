@@ -4,6 +4,7 @@ import { sendToVCChat, updateLogMessage } from "../services/log";
 import pms from "ms-prettify";
 import * as database from "../database/database";
 import { Events } from "discord.js";
+import * as log from "../utils/logger";
 
 client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     const VCmembers = oldState.channel?.members ?? newState.channel?.members;
@@ -14,14 +15,15 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     if (!vcID) return;
 
     const vcData = await database.getVoiceChannel(vcID);
+    const vcChannel = newState.channel ?? oldState.channel;
     const vcStartTime = vcData?.vcStartTime ?? new Date();
 
     const logMsg = utils.generateLogMsg(oldState, newState, vcStartTime);
     if (!logMsg) return;
 
-    if (vcData && utils.getLogLength(vcData.logs) > 4000) {
-        const msg = await sendToVCChat(newState, vcData);
-
+    if (vcData && utils.getLogLength(vcData.logs) > 1000) {
+        const msg = await sendToVCChat(vcChannel, vcData);
+        await vcData.clearLogs();
         await vcData.setLogMessage(msg);
     }
 
@@ -29,7 +31,7 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     if (!vcData && membersVCCount !== 0) {
         const VC = await database.addVoiceChannel({ vcID: vcID, vcStartTime: new Date(), memberCount: membersVCCount, logs: [logMsg] });
 
-        const msg = await sendToVCChat(newState, VC);
+        const msg = await sendToVCChat(vcChannel, VC);
         await VC.setLogMessage(msg);
     }
 
@@ -43,6 +45,7 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     }
 
     else if (membersVCCount !== 0 && vcData && vcData?.memberCount !== 0) {
+        log.debug("loglength", utils.getLogLength(vcData.logs));
         await vcData.addLogLine(logMsg);
         updateLogMessage(vcData);
     }

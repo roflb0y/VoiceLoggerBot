@@ -1,4 +1,4 @@
-import { Colors, EmbedBuilder, Message, VoiceState } from "discord.js";
+import { Colors, EmbedBuilder, Message, VoiceBasedChannel, VoiceState } from "discord.js";
 import { vcDataI } from "../database/interface";
 import { client } from "../client";
 import { editLogMessage } from "./sendApi";
@@ -14,10 +14,11 @@ function buildLogEmbed(vcData: vcDataI, footerText?: string) {
     return embed;
 }
 
-export async function sendToVCChat(vc: VoiceState, vcData: vcDataI): Promise<Message<true>> {
-    const embed = buildLogEmbed(vcData)
+export async function sendToVCChat(vc: VoiceBasedChannel | null, vcData: vcDataI): Promise<Message<true>> {
+    const embed = buildLogEmbed(vcData);
+    if (!vc) throw Error("VC is null");
 
-    const message = await vc.channel?.send({ embeds: [embed] });
+    const message = await vc.send({ embeds: [embed] });
     if (!message) throw Error("message is undefined");
 
     return message;

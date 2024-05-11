@@ -53,6 +53,13 @@ export class VoiceChannel {
         log.db(`ADDED LOG TO ${this.vcID}: ${logMsg}`);
     };
 
+    async clearLogs(): Promise<void> {
+        await voiceChannelsModel.findOneAndUpdate({ vcID: this.vcID }, { "logs": [] }, { "returnDocument": "after" });
+        
+        this.logs = [];
+        log.db(`CLEARED LOGS: ${this.vcID}`);
+    }
+
     async delete(): Promise<void> {
         await voiceChannelsModel.deleteOne({ vcID: this.vcID });
         log.db(`ENDED VC: ${this.vcID}`);
