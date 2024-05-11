@@ -3,8 +3,8 @@ import { VoiceState, EmbedBuilder, Colors, Message } from "discord.js";
 import * as log from "./utils/logger";
 import * as config from "./config";
 
-//process.on("uncaughtException", (err) => { log.error(err) });
-//process.on("unhandledRejection", (err) => { log.error(err) });
+process.on("uncaughtException", (err) => { log.error(err) });
+process.on("unhandledRejection", (err) => { log.error(err) });
 
 import "./handlers/init";
 import mongoose from "mongoose";
