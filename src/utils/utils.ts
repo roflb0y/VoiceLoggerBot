@@ -31,9 +31,12 @@ export function getDatesDiffString(startTime: Date, endTime: Date): string {
   return `${daysDiff > 0 ? daysDiffString + ":" : ""}${hoursDiffString}:${minutesDiffString}:${secsDiffString}`;
 }
 
-export function generateLogMsg(oldState: VoiceState, newState: VoiceState, vcStartTime: Date): string | undefined {
+export function formatLogMsg(msg: string, vcStartTime: Date): string {
   const vcTimeString = getDatesDiffString(vcStartTime, new Date());
+  return `\`${getLogDate()}, ${vcTimeString}\` ${msg}`;
+}
 
+export function generateLogMsg(oldState: VoiceState, newState: VoiceState, vcStartTime: Date): string | undefined {
   let logMsg = "хуй"
     
   const memberJoinedVC = !oldState.channel && newState.channel;
@@ -75,7 +78,7 @@ export function generateLogMsg(oldState: VoiceState, newState: VoiceState, vcSta
   }
   else { return undefined }
 
-  return `\`${getLogDate()}, ${vcTimeString}\` ${logMsg}`;
+  return formatLogMsg(logMsg, vcStartTime);
 }
 
 export function getLogLength(vcLogs: string[]) {

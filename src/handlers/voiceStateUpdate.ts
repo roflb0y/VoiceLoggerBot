@@ -29,7 +29,8 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
 
     // есле бот еще не знает о войсе
     if (!vcData && membersVCCount !== 0) {
-        const VC = await database.addVoiceChannel({ vcID: vcID, vcStartTime: new Date(), memberCount: membersVCCount, logs: [logMsg] });
+        const voiceStartLog = utils.formatLogMsg(`🔹 Войс начался`, vcStartTime);
+        const VC = await database.addVoiceChannel({ vcID: vcID, vcStartTime: new Date(), memberCount: membersVCCount, logs: [voiceStartLog, logMsg] });
 
         const msg = await sendToVCChat(vcChannel, VC);
         await VC.setLogMessage(msg);
@@ -45,7 +46,6 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     }
 
     else if (membersVCCount !== 0 && vcData && vcData?.memberCount !== 0) {
-        log.debug("loglength", utils.getLogLength(vcData.logs));
         await vcData.addLogLine(logMsg);
         updateLogMessage(vcData);
     }
