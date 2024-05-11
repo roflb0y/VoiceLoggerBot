@@ -21,7 +21,7 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     const logMsg = utils.generateLogMsg(oldState, newState, vcStartTime);
     if (!logMsg) return;
 
-    if (vcData && utils.getLogLength(vcData.logs) > 1000) {
+    if (vcData && utils.getLogLength(vcData.logs) > 4000) {
         const msg = await sendToVCChat(vcChannel, vcData);
         await vcData.clearLogs();
         await vcData.setLogMessage(msg);

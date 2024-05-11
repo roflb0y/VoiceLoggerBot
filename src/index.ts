@@ -1,5 +1,4 @@
 import { client } from "./client";
-import { VoiceState, EmbedBuilder, Colors, Message } from "discord.js";
 import * as log from "./utils/logger";
 import * as config from "./config";
 
