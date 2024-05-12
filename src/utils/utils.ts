@@ -1,10 +1,10 @@
-import pms from "ms-prettify";
-import * as log from "./logger";
 import { VoiceState } from "discord.js";
+import { getLang, formatString } from "../i18n/getLang";
+import { i18nI } from "../i18n/interface";
 
-export function getLogDate() {
+export function getLogDate(timezone?: string) {
   const date = new Date()
-  return `${date.toLocaleString("ru-RU")}`
+  return `${date.toLocaleString("ru-RU", { timeZone: timezone })}`
 };
 
 export function getDate() {
@@ -31,13 +31,13 @@ export function getDatesDiffString(startTime: Date, endTime: Date): string {
   return `${daysDiff > 0 ? daysDiffString + ":" : ""}${hoursDiffString}:${minutesDiffString}:${secsDiffString}`;
 }
 
-export function formatLogMsg(msg: string, vcStartTime: Date): string {
+export function formatLogMsg(msg: string, vcStartTime: Date, timezone: string): string {
   const vcTimeString = getDatesDiffString(vcStartTime, new Date());
-  return `\`${getLogDate()}, ${vcTimeString}\` ${msg}`;
+  return `\`${getLogDate(timezone)}, ${vcTimeString}\` ${msg}`;
 }
 
-export function generateLogMsg(oldState: VoiceState, newState: VoiceState, vcStartTime: Date): string | undefined {
-  let logMsg = "хуй"
+export function generateLogMsg(lang: i18nI, oldState: VoiceState, newState: VoiceState, vcStartTime: Date, timezone: string): string | undefined {
+  let logMsg = "хуй";
     
   const memberJoinedVC = !oldState.channel && newState.channel;
   const memberLeftVC = oldState.channel && !newState.channel;
@@ -50,35 +50,35 @@ export function generateLogMsg(oldState: VoiceState, newState: VoiceState, vcSta
   const memberMovedChannels = oldState.channel?.id !== newState.channel?.id;
 
   if (memberJoinedVC) {
-      logMsg = `📥  ${newState.member?.displayName} зашел в войс`;
+      logMsg = formatString(lang.VC_LOGS.MEMBER_ENTERED_VC, [ newState.member?.displayName ]);
   }
   else if (memberLeftVC) {
-      logMsg = `📤 ${newState.member?.displayName} вышел с войса`;
+      logMsg = formatString(lang.VC_LOGS.MEMBER_LEFT_VC, [ newState.member?.displayName ]);
   }
   else if (memberMuted) {
-      logMsg = `🔇 ${newState.member?.displayName} замутился`;
+      logMsg = formatString(lang.VC_LOGS.MEMBER_MUTED, [ newState.member?.displayName ]);
   }
   else if (memberUnmuted) {
-      logMsg = `🔊 ${newState.member?.displayName} размутился`;
+      logMsg = formatString(lang.VC_LOGS.MEMBER_UNMUTED, [ newState.member?.displayName ]);
   }
   else if (memberStartedStreaming) {
-    logMsg = `🖥🟢 ${newState.member?.displayName} запустил демку`;
+    logMsg = formatString(lang.VC_LOGS.MEMBER_STARTED_STREAM, [ newState.member?.displayName ]);
   }
   else if (memberEndedStreaming) {
-      logMsg = `🖥🔴 ${newState.member?.displayName} закончил демку`;
+      logMsg = formatString(lang.VC_LOGS.MEMBER_ENDED_STREAM, [ newState.member?.displayName ]);
   }
   else if (memberStartedWebcam) {
-      logMsg = `📸 ${newState.member?.displayName} включил камеру`;
+      logMsg = formatString(lang.VC_LOGS.MEMBER_STARTED_WEBCAM, [ newState.member?.displayName ]);
   }
   else if (memberEndedWebcam) {
-      logMsg = `📷 ${newState.member?.displayName} выключил камеру`;
+      logMsg = formatString(lang.VC_LOGS.MEMBER_ENDED_WEBCAM, [ newState.member?.displayName ]);
   }
   else if (memberMovedChannels) {
-      logMsg = `🔁 ${newState.member?.displayName} перешел в войс "${newState.channel?.name}"`;
+      logMsg = formatString(lang.VC_LOGS.MEMBER_MOVED_CHANNELS, [ newState.member?.displayName, newState.channel?.name ]);
   }
   else { return undefined }
 
-  return formatLogMsg(logMsg, vcStartTime);
+  return formatLogMsg(logMsg, vcStartTime, timezone);
 }
 
 export function getLogLength(vcLogs: string[]) {

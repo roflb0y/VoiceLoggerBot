@@ -1,0 +1,26 @@
+{
+    "NO": "no",
+
+    "VC_LOGS": {
+        "VC_STARTED": "🔹 Voice chat has started",
+        "VC_ENDED": "Voice chat has ended! It lasted {0}",
+
+        "MEMBER_ENTERED_VC": "📥 {0} entered voice chat",
+        "MEMBER_LEFT_VC": "📤 {0} left voice chat",
+        "MEMBER_MUTED": "🔇 {0} has muted",
+        "MEMBER_UNMUTED": "🔊 {0} has unmuted",
+        "MEMBER_STARTED_STREAM": "🖥🟢 {0} turned on the stream",
+        "MEMBER_ENDED_STREAM": "🖥🔴 {0} turned off the stream",
+        "MEMBER_STARTED_WEBCAM": "📸 {0} turned on the camera",
+        "MEMBER_ENDED_WEBCAM": "📷 {0} turned off the camera",
+        "MEMBER_MOVED_CHANNELS": "🔁 {0} moved into \"{1}\" voice chat"
+    },
+
+    "CONFIG": {
+        "TIMEZONE_FOUND_MULTIPLE_CITIES": "Several cities have been found for your search. Choose one:",
+        "TIMEZONE_INVALID_CITY": "The entered city was not found.",
+        "TIMEZONE_SET": "Time zone is set to `{0}`\nCurrent time: `{1}`",
+
+        "LANGUAGE_SET": "Language set: {0}"
+    }
+}

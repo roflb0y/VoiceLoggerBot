@@ -5,5 +5,24 @@ export interface vcDataI {
     vcStartTime: Date,
     memberCount: number, 
     logs: Array<string>,
+    timezone: string,
     logMessage?: Message<true>
+}
+
+export interface serverConfigI {
+    language: string,
+    timezone: string
+}
+
+export interface serverDataI {
+    serverID: string,
+    serverName: string,
+    memberCount: number,
+    config: serverConfigI,
+    joinTime?: Date,
+}
+
+export const defaultServerConfig: serverConfigI = {
+    language: "en",
+    timezone: "Europe/London"
 }

@@ -2,6 +2,7 @@ import { client } from "./client";
 import * as log from "./utils/logger";
 import * as config from "./config";
 import mongoose from "mongoose";
+import * as comamnds from "./handlers/commands/commandsInit";
 
 process.on("uncaughtException", (err) => { log.error(err) });
 process.on("unhandledRejection", (err) => { log.error(err) });
@@ -10,7 +11,14 @@ import "./handlers/init";
 
 client.on("ready", async ctx => {
     if (!client.user || !client.application) return;
-    log.info(`Logged as ${client.user.tag}`)
+    log.info(`Logged as ${client.user.tag}`);
+
+    //const slashCommands = await client.application.commands.fetch();
+    //slashCommands.forEach(async cmd => await client.application?.commands.delete(cmd.id));
+
+    client.application.commands.create(comamnds.configCommand.toJSON());
+
+    log.info("Registered commands");
 });
 
 log.info("Connecting to DB");

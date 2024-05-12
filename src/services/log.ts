@@ -1,6 +1,5 @@
-import { Colors, EmbedBuilder, Message, VoiceBasedChannel, VoiceState } from "discord.js";
+import { Colors, EmbedBuilder, Message, VoiceBasedChannel } from "discord.js";
 import { vcDataI } from "../database/interface";
-import { client } from "../client";
 import { editLogMessage } from "./sendApi";
 
 function buildLogEmbed(vcData: vcDataI, footerText?: string) {
