@@ -20,6 +20,10 @@ const voiceChannelsSchema = new mongoose.Schema({
         type: [String],
         default: []
     },
+    logPart: {
+        type: Number,
+        default: 1
+    },
     logMessage: {
         type: Schema.Types.Mixed,
         default: {}

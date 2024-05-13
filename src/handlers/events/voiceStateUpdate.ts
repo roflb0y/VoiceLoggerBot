@@ -31,8 +31,9 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     if (!logMsg) return;
 
     if (vcData && utils.getLogLength(vcData.logs) > 4000) {
-        const msg = await sendToVCChat(vcChannel, vcData);
+        const msg = await sendToVCChat(lang, vcChannel, vcData);
         await vcData.clearLogs();
+        await vcData.addPart();
         await vcData.setLogMessage(msg);
     }
 
@@ -41,7 +42,7 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
         const voiceStartLog = utils.formatLogMsg(lang.VC_LOGS.VC_STARTED, vcStartTime, server.config.timezone);
         const VC = await database.addVoiceChannel({ vcID: vcID, vcStartTime: new Date(), timezone: server.config.timezone, memberCount: membersVCCount, logs: [voiceStartLog, logMsg] });
 
-        const msg = await sendToVCChat(vcChannel, VC);
+        const msg = await sendToVCChat(lang, vcChannel, VC);
         await VC.setLogMessage(msg);
     }
 
@@ -49,14 +50,15 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     else if (membersVCCount === 0 && vcData && vcData?.memberCount !== 0 && vcData?.vcStartTime) {
         const voiceTime = new Date().getTime() - vcData.vcStartTime.getTime();
         await vcData.addLogLine(logMsg);
-        updateLogMessage(vcData, formatString(lang.VC_LOGS.VC_ENDED, [ pms(voiceTime) ]));
+        updateLogMessage(lang, vcData, formatString(lang.VC_LOGS.VC_ENDED, [ pms(voiceTime) ]));
 
         await vcData.delete();
     }
 
     else if (membersVCCount !== 0 && vcData && vcData?.memberCount !== 0) {
+        console.log(utils.getLogLength(vcData.logs));
         await vcData.addLogLine(logMsg);
-        updateLogMessage(vcData);
+        updateLogMessage(lang, vcData);
     }
 
     //console.log(voiceChats);

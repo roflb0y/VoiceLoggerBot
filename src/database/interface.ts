@@ -5,6 +5,7 @@ export interface vcDataI {
     vcStartTime: Date,
     memberCount: number, 
     logs: Array<string>,
+    logPart?: Number,
     timezone: string,
     logMessage?: Message<true>
 }

@@ -44,6 +44,7 @@ export class VoiceChannel {
     timezone: string
     memberCount: number
     logs: Array<string>
+    logPart: number
     logMessage: Message<true> | undefined
 
     constructor(vcData: any) {
@@ -52,13 +53,14 @@ export class VoiceChannel {
         this.timezone = vcData.timezone;
         this.memberCount = vcData.memberCount;
         this.logs = vcData.logs;
+        this.logPart = vcData.logPart;
         this.logMessage = vcData.logMessage ? (vcData.logMessage as Message<true>) : undefined;
     };
 
     async setLogMessage(msg: Message<true>): Promise<void> {
         await voiceChannelsModel.findOneAndUpdate({ vcID: this.vcID }, { "logMessage": msg.toJSON() }, { "returnDocument": "after" });
         this.logMessage = msg;
-    }
+    };
 
     async addLogLine(logMsg: string): Promise<void> {
         const VC = await voiceChannelsModel.findOne({ vcID: this.vcID });
@@ -71,12 +73,17 @@ export class VoiceChannel {
         log.db(`ADDED LOG TO ${this.vcID}: ${logMsg}`);
     };
 
+    async addPart(): Promise<void> {
+        await voiceChannelsModel.findOneAndUpdate({ vcID: this.vcID }, { $inc: { "logPart": 1 } }, { "returnDocument": "after" });
+        this.logPart++;
+    }
+
     async clearLogs(): Promise<void> {
         await voiceChannelsModel.findOneAndUpdate({ vcID: this.vcID }, { "logs": [] }, { "returnDocument": "after" });
         
         this.logs = [];
         log.db(`CLEARED LOGS: ${this.vcID}`);
-    }
+    };
 
     async delete(): Promise<void> {
         await voiceChannelsModel.deleteOne({ vcID: this.vcID });

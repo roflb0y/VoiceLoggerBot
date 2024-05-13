@@ -2,6 +2,9 @@
     "NO": "no",
 
     "VC_LOGS": {
+        "VOICE_FROM": "Voice from",
+        "PART": "Part",
+
         "VC_STARTED": "🔹 Voice chat has started",
         "VC_ENDED": "Voice chat has ended! It lasted {0}",
 
