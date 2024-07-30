@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "run": "node ./dist/index.js",
-    "dev": "tsc && node ./dist/index.js -dev"
+    "dev": "tsc && node ./dist/index.js -dev",
+    "test": "tsc && node ./dist/test.js"
   },
   "keywords": [],
   "author": "",

@@ -142,3 +142,20 @@ export class Server {
         log.db(`SAVED VOICE ${vcData.vcID} LOGS FOR ${this.serverName}`);
     }
 }
+
+export class serverStats {
+    async generate(server: Server) {
+        const res = await logsHistoryModel.aggregate([
+            {
+                $match: { serverId: server.serverID }
+            },
+            {
+                $group: {
+                    _id: "$item",
+                    avgTime: { $avg: "$vcLengthSeconds" }
+                }
+            }
+        ])
+        console.log(res);
+    }
+}
