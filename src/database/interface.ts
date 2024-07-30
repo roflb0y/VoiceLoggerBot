@@ -3,7 +3,8 @@ import { Message } from "discord.js";
 export interface vcDataI {
     vcID: string,
     vcStartTime: Date,
-    memberCount: number, 
+    memberCount: number,
+    maxMemberCount: number,
     logs: Array<string>,
     logPart?: Number,
     timezone: string,

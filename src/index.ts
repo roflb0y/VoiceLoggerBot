@@ -4,6 +4,8 @@ import * as config from "./config";
 import mongoose from "mongoose";
 import * as comamnds from "./handlers/commands/commandsInit";
 
+const args = require('args-parser')(process.argv);
+
 process.on("uncaughtException", (err) => { log.error(err) });
 process.on("unhandledRejection", (err) => { log.error(err) });
 
@@ -35,5 +37,5 @@ mongoose.connect(config.MONGODB_URI,
 })
 .then(async () => {
     log.info("Connected to DB. Launching the bot...");
-    client.login(config.BOT_TOKEN);
+    client.login(args.dev ? config.DEV_TOKEN : config.BOT_TOKEN);
 })

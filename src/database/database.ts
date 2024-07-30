@@ -1,7 +1,8 @@
 import { vcDataI, serverDataI, serverConfigI } from "./interface";
-import { voiceChannelsModel, serversModel } from "./schemas";
+import { voiceChannelsModel, serversModel, logsHistoryModel } from "./schemas";
 import * as log from "../utils/logger";
 import { Message } from "discord.js";
+import moment from "moment";
 
 export async function getVoiceChannel(vcID: string): Promise<VoiceChannel | undefined> {
     const VC = await voiceChannelsModel.findOne({ vcID: vcID });
@@ -43,6 +44,7 @@ export class VoiceChannel {
     vcStartTime: Date
     timezone: string
     memberCount: number
+    maxMemberCount: number
     logs: Array<string>
     logPart: number
     logMessage: Message<true> | undefined
@@ -52,6 +54,7 @@ export class VoiceChannel {
         this.vcStartTime = vcData.vcStartTime;
         this.timezone = vcData.timezone;
         this.memberCount = vcData.memberCount;
+        this.maxMemberCount = vcData.maxMemberCount;
         this.logs = vcData.logs;
         this.logPart = vcData.logPart;
         this.logMessage = vcData.logMessage ? (vcData.logMessage as Message<true>) : undefined;
@@ -76,7 +79,11 @@ export class VoiceChannel {
     async addPart(): Promise<void> {
         await voiceChannelsModel.findOneAndUpdate({ vcID: this.vcID }, { $inc: { "logPart": 1 } }, { "returnDocument": "after" });
         this.logPart++;
-    }
+    };
+
+    async updateMaxMembers(count: number): Promise<void> {
+        const res = await voiceChannelsModel.findOneAndUpdate({ vcID: this.vcID }, { $max: { maxMemberCount: count } }, { "returnDocument": "after" });
+    };
 
     async clearLogs(): Promise<void> {
         await voiceChannelsModel.findOneAndUpdate({ vcID: this.vcID }, { "logs": [] }, { "returnDocument": "after" });
@@ -118,5 +125,20 @@ export class Server {
         this.config.timezone = tz;
 
         log.db(`SET TIMEZONE TO "${tz}" FOR ${this.serverName}`);
+    }
+
+    async addLogToHistory(vcData: vcDataI) {
+        const time = moment();
+        await new logsHistoryModel({
+            serverId: this.serverID,
+            vcID: vcData.vcID,
+            vcStartTime: vcData.vcStartTime,
+            vcLengthSeconds: moment.duration(time.diff(vcData.vcStartTime)).asSeconds(),
+            timezone: vcData.timezone,
+            maxMemberCount: vcData.maxMemberCount,
+            logs: vcData.logs,
+            logParts: vcData.logPart
+        }).save()
+        log.db(`SAVED VOICE ${vcData.vcID} LOGS FOR ${this.serverName}`);
     }
 }

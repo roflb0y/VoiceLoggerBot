@@ -14,7 +14,11 @@ const voiceChannelsSchema = new mongoose.Schema({
     },
     memberCount: {
         type: Number,
-        default: 0
+        default: 1
+    },
+    maxMemberCount: {
+        type: Number,
+        default: 1
     },
     logs: {
         type: [String],
@@ -27,6 +31,39 @@ const voiceChannelsSchema = new mongoose.Schema({
     logMessage: {
         type: Schema.Types.Mixed,
         default: {}
+    }
+});
+
+const logsHistorySchema = new mongoose.Schema({
+    serverId: {
+        type: String,
+        default: ""
+    },
+    vcID: {
+        type: String,
+        default: ""
+    },
+    vcStartTime: {
+        type: Date
+    },
+    vcEndTime: {
+        type: Date,
+        default: () => new Date()
+    },
+    vcLengthSeconds: {
+        type: Number
+    },
+    timezone: {
+        type: String
+    },
+    maxMemberCount: {
+        type: Number
+    },
+    logs: {
+        type: [String]
+    },
+    logParts: {
+        type: Number
     }
 });
 
@@ -48,7 +85,8 @@ const serversSchema = new mongoose.Schema({
         type: Date,
         default: () => new Date().setHours(new Date().getHours()),
     }
-})
+});
 
 export const voiceChannelsModel = mongoose.model("voicechannels", voiceChannelsSchema);
+export const logsHistoryModel = mongoose.model("logs", logsHistorySchema);
 export const serversModel = mongoose.model("servers", serversSchema);

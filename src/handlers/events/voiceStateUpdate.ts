@@ -40,7 +40,7 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     // есле бот еще не знает о войсе
     if (!vcData && membersVCCount !== 0) {
         const voiceStartLog = utils.formatLogMsg(lang.VC_LOGS.VC_STARTED, vcStartTime, server.config.timezone);
-        const VC = await database.addVoiceChannel({ vcID: vcID, vcStartTime: new Date(), timezone: server.config.timezone, memberCount: membersVCCount, logs: [voiceStartLog, logMsg] });
+        const VC = await database.addVoiceChannel({ vcID: vcID, vcStartTime: new Date(), timezone: server.config.timezone, memberCount: membersVCCount, maxMemberCount: membersVCCount, logs: [voiceStartLog, logMsg] });
 
         const msg = await sendToVCChat(lang, vcChannel, VC);
         await VC.setLogMessage(msg);
@@ -52,12 +52,14 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
         await vcData.addLogLine(logMsg);
         updateLogMessage(lang, vcData, formatString(lang.VC_LOGS.VC_ENDED, [ pms(voiceTime) ]));
 
+        await server.addLogToHistory(vcData);
+
         await vcData.delete();
     }
 
     else if (membersVCCount !== 0 && vcData && vcData?.memberCount !== 0) {
-        console.log(utils.getLogLength(vcData.logs));
         await vcData.addLogLine(logMsg);
+        await vcData.updateMaxMembers(membersVCCount);
         updateLogMessage(lang, vcData);
     }
 
