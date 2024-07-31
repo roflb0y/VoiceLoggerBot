@@ -28,3 +28,7 @@ export const configCommand = new SlashCommandBuilder()
                     .setRequired(true)
         )
     )
+
+export const statsCommand = new SlashCommandBuilder()
+    .setName("stats")
+    .setDescription("See the voice stats of your server")

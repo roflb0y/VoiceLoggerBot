@@ -19,6 +19,7 @@ client.on("ready", async ctx => {
     //slashCommands.forEach(async cmd => await client.application?.commands.delete(cmd.id));
 
     client.application.commands.create(comamnds.configCommand.toJSON());
+    client.application.commands.create(comamnds.statsCommand.toJSON());
 
     log.info("Registered commands");
 });

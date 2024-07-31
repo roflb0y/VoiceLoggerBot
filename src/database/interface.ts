@@ -24,6 +24,12 @@ export interface serverDataI {
     joinTime?: Date,
 }
 
+export interface serverStatsI {
+    recordedVoiceChats: number,
+    avgVCLength: number,
+    longestVCLength: number
+}
+
 export const defaultServerConfig: serverConfigI = {
     language: "en",
     timezone: "Europe/London"

@@ -25,5 +25,8 @@
         "TIMEZONE_SET": "Time zone is set to `{0}`\nCurrent time: `{1}`",
 
         "LANGUAGE_SET": "Language set: {0}"
-    }
+    },
+
+    "STATS": "Recorded voice chats: `{0}`\nAverage VC length: `{1}`\nLongest VC length: `{2}`",
+    "STATS_NO_VC_RECORDS": "No VC records"
 }

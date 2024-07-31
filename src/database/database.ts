@@ -1,4 +1,4 @@
-import { vcDataI, serverDataI, serverConfigI } from "./interface";
+import { vcDataI, serverDataI, serverConfigI, serverStatsI } from "./interface";
 import { voiceChannelsModel, serversModel, logsHistoryModel } from "./schemas";
 import * as log from "../utils/logger";
 import { Message } from "discord.js";
@@ -144,18 +144,19 @@ export class Server {
 }
 
 export class serverStats {
-    async generate(server: Server) {
-        const res = await logsHistoryModel.aggregate([
-            {
-                $match: { serverId: server.serverID }
-            },
-            {
-                $group: {
-                    _id: "$item",
-                    avgTime: { $avg: "$vcLengthSeconds" }
-                }
-            }
-        ])
-        console.log(res);
+    async generate(server: Server): Promise<serverStatsI> {
+        const avgVCLength = await logsHistoryModel.aggregate([
+            { $match: { serverId: server.serverID } },
+            { $group: { _id: "$item", avgTime: { $avg: "$vcLengthSeconds" } } }
+        ]);
+
+        const recordedVoiceChats = await logsHistoryModel.find({ serverId: server.serverID }).countDocuments();
+        const longestVC = await logsHistoryModel.find({ serverId: server.serverID }).sort({ "vcLengthSeconds": -1 }).limit(1)
+        
+        return { 
+            avgVCLength: Math.floor(avgVCLength[0]?.avgTime) ?? 0, 
+            recordedVoiceChats: recordedVoiceChats,
+            longestVCLength: Math.floor(longestVC[0]?.vcLengthSeconds) ?? 0
+        }
     }
 }

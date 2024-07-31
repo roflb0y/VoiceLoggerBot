@@ -51,7 +51,8 @@ const logsHistorySchema = new mongoose.Schema({
         default: () => new Date()
     },
     vcLengthSeconds: {
-        type: Number
+        type: Number,
+        default: 0
     },
     timezone: {
         type: String

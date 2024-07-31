@@ -1,6 +1,7 @@
 import { VoiceState } from "discord.js";
 import { getLang, formatString } from "../i18n/getLang";
 import { i18nI } from "../i18n/interface";
+import moment from "moment";
 
 export function getLogDate(timezone?: string) {
   const date = new Date()
@@ -83,4 +84,8 @@ export function generateLogMsg(lang: i18nI, oldState: VoiceState, newState: Voic
 
 export function getLogLength(vcLogs: string[]) {
   return vcLogs.join("\n").length
+}
+
+export function formatSeconds(s: number) {
+  return moment.utc(s*1000).format("HH:mm:ss")
 }

@@ -5,6 +5,7 @@ import { setTimezoneCommand } from "../commands/setTimezone";
 import * as database from "../../database/database";
 import { defaultServerConfig } from "../../database/interface";
 import { getLang } from "../../i18n/getLang";
+import { statsCommand } from "../commands/stats";
 
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction || !interaction.guild || !interaction.channel) return;
@@ -19,7 +20,10 @@ client.on(Events.InteractionCreate, async interaction => {
 
     const lang = getLang(server.config.language);
 
-    if (interaction.commandName === "config") {
+    if (interaction.commandName === "stats") {
+        statsCommand(interaction);
+    }
+    else if (interaction.commandName === "config") {
         if (!interaction.memberPermissions) return;
         if (!interaction.memberPermissions.has(PermissionsBitField.Flags.Administrator)) {
             await interaction.reply({ content: lang.NO, options: { ephemeral: true } } );
