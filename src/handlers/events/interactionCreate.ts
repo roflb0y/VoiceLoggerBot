@@ -5,7 +5,7 @@ import { setTimezoneCommand } from "../commands/setTimezone";
 import * as database from "../../database/database";
 import { defaultServerConfig } from "../../database/interface";
 import { getLang } from "../../i18n/getLang";
-import { statsCommand } from "../commands/stats";
+import { statsCommand, userStatsCommand } from "../commands/stats";
 
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction || !interaction.guild || !interaction.channel) return;
@@ -22,6 +22,9 @@ client.on(Events.InteractionCreate, async interaction => {
 
     if (interaction.commandName === "stats") {
         statsCommand(interaction);
+    }
+    else if (interaction.commandName === "userstats") {
+        userStatsCommand(interaction);
     }
     else if (interaction.commandName === "config") {
         if (!interaction.memberPermissions) return;

@@ -10,7 +10,8 @@ const voiceChannelsSchema = new mongoose.Schema({
         default: () => new Date()
     },
     timezone: {
-        type: String
+        type: String,
+        required: true
     },
     memberCount: {
         type: Number,
@@ -22,6 +23,16 @@ const voiceChannelsSchema = new mongoose.Schema({
     },
     logs: {
         type: [String],
+        default: []
+    },
+    events: {
+        type: [
+            {
+                action: { type: String, required: true },
+                data: { type: [String], required: true },
+                timestamp: { type: Date, required: true }
+            }
+        ],
         default: []
     },
     logPart: {
@@ -62,6 +73,15 @@ const logsHistorySchema = new mongoose.Schema({
     },
     logs: {
         type: [String]
+    },
+    events: {
+        type: [
+            {
+                action: String,
+                data: [String],
+                timestamp: Date
+            }
+        ]
     },
     logParts: {
         type: Number

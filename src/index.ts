@@ -6,8 +6,8 @@ import * as comamnds from "./handlers/commands/commandsInit";
 
 const args = require('args-parser')(process.argv);
 
-process.on("uncaughtException", (err) => { log.error(err) });
-process.on("unhandledRejection", (err) => { log.error(err) });
+// process.on("uncaughtException", (err) => { log.error(err) });
+// process.on("unhandledRejection", (err) => { log.error(err) });
 
 import "./handlers/init";
 
@@ -20,6 +20,7 @@ client.on("ready", async ctx => {
 
     client.application.commands.create(comamnds.configCommand.toJSON());
     client.application.commands.create(comamnds.statsCommand.toJSON());
+    client.application.commands.create(comamnds.userStatsCommand.toJSON());
 
     log.info("Registered commands");
 });

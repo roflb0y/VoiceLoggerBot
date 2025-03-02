@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "run": "node ./dist/index.js",
+    "prod": "node ./dist/index.js",
     "dev": "tsc && node ./dist/index.js -dev",
     "test": "tsc && node ./dist/test.js"
   },

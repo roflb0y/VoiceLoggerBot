@@ -5,18 +5,18 @@
         "VOICE_FROM": "Voice from",
         "PART": "Part",
 
-        "VC_STARTED": "🔹 Voice chat has started",
-        "VC_ENDED": "Voice chat has ended! It lasted {0}",
+        "VC_START": "🔹 Voice chat has started",
+        "VC_END": "Voice chat has ended! It lasted {0}",
 
-        "MEMBER_ENTERED_VC": "📥 {0} entered voice chat",
-        "MEMBER_LEFT_VC": "📤 {0} left voice chat",
-        "MEMBER_MUTED": "🔇 {0} has muted",
-        "MEMBER_UNMUTED": "🔊 {0} has unmuted",
-        "MEMBER_STARTED_STREAM": "🖥🟢 {0} turned on the stream",
-        "MEMBER_ENDED_STREAM": "🖥🔴 {0} turned off the stream",
-        "MEMBER_STARTED_WEBCAM": "📸 {0} turned on the camera",
-        "MEMBER_ENDED_WEBCAM": "📷 {0} turned off the camera",
-        "MEMBER_MOVED_CHANNELS": "🔁 {0} moved into \"{1}\" voice chat"
+        "USER_JOINED": "📥 {0} entered voice chat",
+        "USER_LEFT": "📤 {0} left voice chat",
+        "USER_MUTED": "🔇 {0} has muted",
+        "USER_UNMUTED": "🔊 {0} has unmuted",
+        "USER_STARTED_STREAM": "🖥🟢 {0} turned on the stream",
+        "USER_ENDED_STREAM": "🖥🔴 {0} turned off the stream",
+        "USER_STARTED_WEBCAM": "📸 {0} turned on the camera",
+        "USER_ENDED_WEBCAM": "📷 {0} turned off the camera",
+        "USER_MOVED_CHANNELS": "🔁 {0} moved from \"{1}\" into \"{2}\""
     },
 
     "CONFIG": {
@@ -28,5 +28,6 @@
     },
 
     "STATS": "Recorded voice chats: `{0}`\nAverage VC length: `{1}`\nLongest VC length: `{2}`",
+    "USER_STATS": "Statistics of user **{0}**:\nVoice chats: `{1}`\nAverage VC length: `{2}`\nLongest VC length: `{3}`",
     "STATS_NO_VC_RECORDS": "No VC records"
 }
